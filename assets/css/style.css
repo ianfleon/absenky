@@ -1,0 +1,13 @@
+body {
+    background-color: #F0EEF8;
+    font-family: "Poppins", sans-serif;
+}
+
+.photo-user {
+    height: 210px;
+    object-fit: cover;
+}
+
+#reader {
+    width: 100%;
+}
