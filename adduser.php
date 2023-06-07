@@ -7,7 +7,7 @@
 </head>
 
 <body>
-    
+
     <div class="container mt-4">
         <div class="d-flex">
             <a href="dashboard.php" class="btn btn-light border">Back</a>
@@ -47,27 +47,60 @@
                 </div>
             </div> -->
 
-            <div class="card p-4">
-                <form action="">
-                    <div class="d-flex align-align-items-center">
-                        <button class="btn btn-primary ms-auto">Submit</button>
+            <div class="card">
+                <form action="" id="form_add">
+                    <div class="d-flex align-items-center bg-light px-4 py-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="d-block me-2" width="24" viewBox="0 0 24 24" id="add-account">
+                            <path d="M21,10.5H20v-1a1,1,0,0,0-2,0v1H17a1,1,0,0,0,0,2h1v1a1,1,0,0,0,2,0v-1h1a1,1,0,0,0,0-2Zm-7.7,1.72A4.92,4.92,0,0,0,15,8.5a5,5,0,0,0-10,0,4.92,4.92,0,0,0,1.7,3.72A8,8,0,0,0,2,19.5a1,1,0,0,0,2,0,6,6,0,0,1,12,0,1,1,0,0,0,2,0A8,8,0,0,0,13.3,12.22ZM10,11.5a3,3,0,1,1,3-3A3,3,0,0,1,10,11.5Z"></path>
+                        </svg>
+                        <p class="fw-bold m-0 text-muted">
+                            Tambah User
+                        </p>
+                        <button class="btn btn-primary ms-auto" id="btn_add">Submit</button>
                     </div>
-                    <div class="mb-3">
-                        <label for="nama" class="form-label">Nama Lengkap</label>
-                        <input type="text" class="form-control" id="nama">
-                    </div>
-                    <div class="mb-3">
-                        <label for="posisi" class="form-label">Posisi</label>
-                        <input type="text" class="form-control" id="posisi">
-                    </div>
-                    <div class="mb-3">
-                        <label for="foto" class="form-label">Foto</label>
-                        <input class="form-control" type="file" id="foto">
+                    <div class="p-4">
+                        <div class="mb-3">
+                            <label for="nama" class="form-label">Nama Lengkap</label>
+                            <input type="text" class="form-control" name="nama" id="nama">
+                        </div>
+                        <div class="mb-3">
+                            <label for="posisi" class="form-label">Posisi</label>
+                            <input type="text" class="form-control" name="posisi" id="posisi">
+                        </div>
+                        <div class="mb-3">
+                            <label for="foto" class="form-label">Foto</label>
+                            <input class="form-control" type="file" name="foto" id="foto">
+                        </div>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+
+    <script src="/assets/js/jquery.js"></script>
+
+    <script>
+
+        
+        const BtnAdd = $('#btn_add').click(function(btn) {
+            
+            btn.preventDefault();
+            
+            const FormAdd = new FormData(document.getElementById('form_add'));
+
+            $.ajax({
+                method: 'POST',
+                url: 'api/?q=add',
+                cache: false,
+                processData: false,
+                contentType: false,
+                data: FormAdd,
+                success: function(res) {
+                    console.log(res);
+                }
+            });
+        });
+    </script>
 
 </body>
 
