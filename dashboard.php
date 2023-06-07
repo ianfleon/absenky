@@ -21,6 +21,25 @@ $staff = [
 </head>
 
 <body>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalqr" tabindex="-1" aria-labelledby="modalqr" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">QRCode - Nama Pegawai</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">Download</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="container mt-4">
         <div class="d-flex">
             <a href="index.php" class="btn btn-light border">Home</a>
@@ -78,6 +97,8 @@ $staff = [
             </div>
         </div>
     </div>
+
+    <script src="/assets/bs5/js/bootstrap.bundle.min.js"></script>
 
 </body>
 
