@@ -90,7 +90,7 @@
 
             $.ajax({
                 method: 'POST',
-                url: 'api/?q=add',
+                url: 'api/index.php?ep=add',
                 cache: false,
                 processData: false,
                 contentType: false,
