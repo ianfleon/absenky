@@ -24,12 +24,12 @@
                         <div class="card mb-3">
                             <div class="row g-0">
                                 <div class="col-lg-3">
-                                    <img src="/public/photos/1.jpg" class="img-fluid rounded-start photo-user" />
+                                    <img src="/assets/images/nophoto.jpg" class="img-fluid rounded-start photo-user" />
                                 </div>
                                 <div class="col-lg-9 d-flex align-items-center">
                                     <div class="card-body">
-                                        <h5>Yusril Ikhsa Mahulauw</h5>
-                                        <p class="card-text">Staff IT</p>
+                                        <h5>-</h5>
+                                        <p class="card-text">-</p>
                                     </div>
                                 </div>
                             </div>
