@@ -18,15 +18,10 @@
         <div class="d-flex my-4">
             <div class="col-lg-4 m-auto">
                 <div class="card p-4">
-                    <form action="dashboard.php">
-                        <!-- <div class="mb-3">
-                            <label for="exampleInputPassword1" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="exampleInputPassword1">
-                        </div>
-                        <button type="submit" class="btn btn-primary">Login</button> -->
+                    <form>
                         <div class="input-group">
-                            <input type="password" class="form-control" placeholder="Password">
-                            <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Login</button>
+                            <input type="password" class="form-control" name="pw" id="pw" placeholder="Password">
+                            <button class="btn btn-outline-secondary" type="button" id="btn_login">Login</button>
                         </div>
                     </form>
                 </div>
@@ -34,7 +29,47 @@
         </div>
     </div>
 
-    <?php require_once('components/scriptjs.php'); ?>
+    <script>
+        $(function() {
+            $('#btn_login').click(function() {
+                $.ajax({
+                    url: 'api.php?ep=login',
+                    method: 'POST',
+                    data: {
+                        pw: $('#pw').val()
+                    },
+                    success: function(res) {
+
+                        let txtAlert, iconAlert;
+                        res = JSON.parse(res);
+
+                        switch (res.status) {
+                            case 200:
+                                txtAlert = 'BERHASIL';
+                                iconAlert = 'success';
+                                setTimeout(() => {
+                                    location.replace('/dashboard.php');
+                                }, 2000);
+                                break;
+                            case 500:
+                                txtAlert = 'EROR';
+                                iconAlert = 'error';
+                            default:
+                                break;
+                        }
+
+                        swal({
+                            title: 'Status Login',
+                            text: txtAlert,
+                            icon: iconAlert,
+                            button: "OK",
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
 </body>
 
 </html>
