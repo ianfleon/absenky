@@ -1,14 +1,25 @@
+<?php
+
+session_start();
+
+if (!isset($_SESSION['ADMIN_LOGINED'])) {
+    header('Location: /login.php');
+}
+
+?>
+
 <?php require_once('helper/view.php'); ?>
 
 <?php
 
-$staff = [
-    [
-        'id' => 12,
-        'nama' => 'Yusril Ikhsa Mahulauw',
-        'posisi' => 'Staff IT'
-    ]
-];
+$db = new SQLite3('absenky.db');
+
+$staff = [];
+
+$result = $db->query("SELECT * FROM staffs_tb");
+while ($row = $result->fetchArray()) {
+    $staff[] = $row;
+}
 
 ?>
 
@@ -27,14 +38,14 @@ $staff = [
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">QRCode - Nama Pegawai</h5>
+                    <h5 class="modal-title" id="label_modal">QRCode - Nama Pegawai</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    ...
+                    <img src="" id="img_qr" width="100%" alt="">
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">Download</button>
+                    <a href="#" download id="btn_download_qr" class="btn btn-primary">Download</a>
                 </div>
             </div>
         </div>
@@ -43,7 +54,10 @@ $staff = [
     <div class="container mt-4">
         <div class="d-flex">
             <a href="index.php" class="btn btn-light border">Home</a>
-            <a href="adduser.php" class="btn btn-light border ms-auto me-4">Tambah User</a>
+            <div class="ms-auto">
+                <a href="#" id="btn_ganti_pw" class="btn btn-outline-danger border ms-auto">Ganti Password</a>
+                <a href="form-staff.php" class="btn btn-light border ms-auto">Tambah User</a>
+            </div>
         </div>
     </div>
 
@@ -51,7 +65,7 @@ $staff = [
         <div class="row mt-4">
             <div class="col-lg-8 mb-4">
                 <div class="card p-4">
-                    <table class="table table-hover">
+                    <table class="table table-hover" id="table_staff">
                         <thead>
                             <tr>
                                 <td class="fw-bold">Nama</td>
@@ -99,6 +113,141 @@ $staff = [
     </div>
 
     <script src="/assets/bs5/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(function() {
+
+            $("#table_staff").DataTable({
+                "responsive": true,
+                "lengthChange": false,
+                "autoWidth": false
+            });
+
+        });
+    </script>
+
+    <script>
+        function showQR(id, nama) {
+            $("#label_modal").html('QRCode: ' + nama);
+            $("#img_qr").attr('src', '/public/qr/' + id + '.png');
+            $("#btn_download_qr").attr('download', nama + ' - QRCode.png');
+            $("#btn_download_qr").attr('href', '/public/qr/' + id + '.png');
+        }
+    </script>
+
+    <script>
+        $(function() {
+
+            function gantiPassword(pw) {
+
+                $.ajax({
+                    method: 'POST',
+                    url: 'api.php?ep=gantipw',
+                    data: {
+                        pw: pw
+                    },
+                    success: function(res) {
+
+                        res = JSON.parse(res);
+
+                        console.log(res);
+
+                        let txtAlert, iconAlert;
+
+                        if (res.status == 200) {
+                            txtAlert = 'BERHASIL';
+                            iconAlert = 'success';
+                        } else {
+                            txtAlert = 'ERROR';
+                            iconAlert = 'error';
+                        }
+
+                        swal({
+                            title: res.message,
+                            text: txtAlert,
+                            icon: iconAlert,
+                            button: "OK",
+                        });
+
+                    }
+                });
+            }
+
+            $("#btn_ganti_pw").click(function() {
+                swal("Masukan Password Baru:", {
+                    content: "input",
+                    buttons: {
+                        cancel: "Batal",
+                        submit: true
+                    }
+                }).then((value) => {
+                    switch (value) {
+                        case 'submit':
+                            gantiPassword($('.swal-content__input').val());
+                            break;
+                        default:
+                            break;
+                    }
+                });
+            });
+
+        });
+    </script>
+
+    <script>
+        function deleteStaff(id, nama, el) {
+            swal("Ingin hapus data: " + nama, {
+                    buttons: {
+                        cancel: "Kembali",
+                        yes: true,
+                    },
+                })
+                .then((value) => {
+                    switch (value) {
+                        case "yes":
+                            execDeleteStaff(id, el.parentElement.parentElement);
+                            break;
+                        default:
+                            break;
+                    }
+                });
+        }
+
+        function execDeleteStaff(id, el) {
+
+            $.ajax({
+                method: 'POST',
+                url: 'api.php?ep=delete_staff',
+                data: {
+                    id_staff: id
+                },
+                success: function(res) {
+
+                    res = JSON.parse(res);
+
+                    console.log(res);
+
+                    let txtAlert, iconAlert;
+
+                    if (res.status == 200) {
+                        txtAlert = 'BERHASIL';
+                        iconAlert = 'success';
+                    } else {
+                        txtAlert = 'ERROR';
+                        iconAlert = 'error';
+                    }
+
+                    swal({
+                        text: txtAlert,
+                        icon: iconAlert,
+                        button: "OK",
+                    });
+
+                    el.remove();
+
+                }
+            });
+        }
+    </script>
 
 </body>
 
