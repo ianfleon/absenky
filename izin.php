@@ -1,3 +1,13 @@
+<?php
+
+session_start();
+
+if (!isset($_SESSION['ADMIN_LOGINED'])) {
+    header('Location: /login.php');
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,6 +17,7 @@
 </head>
 
 <body>
+
     <div class="container mt-4">
         <div class="d-flex">
             <a href="dashboard.php" class="btn btn-light border">Back</a>
@@ -28,41 +39,75 @@
                 </symbol>
             </svg>
 
-            <!-- <div class="alert alert-success d-flex align-items-center" role="alert">
-                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
-                    <use xlink:href="#check-circle-fill" />
-                </svg>
-                <div>
-                    An example success alert with an icon
-                </div>
-            </div> -->
-
-            <!-- <div class="alert alert-danger d-flex align-items-center" role="alert">
-                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
-                    <use xlink:href="#exclamation-triangle-fill" />
-                </svg>
-                <div>
-                    An example danger alert with an icon
-                </div>
-            </div> -->
-
             <div class="card p-4">
-                <form action="">
+                <form action="" id="form_izin">
+
+                    <!-- Dummy ID Staff -->
+                    <input type="hidden" value="<?= $_GET['id']; ?>" name="idx_staff" id="idx_staff" />
+
                     <div class="d-flex align-align-items-center">
-                        <button class="btn btn-primary ms-auto">Submit</button>
+                        <button class="btn btn-primary ms-auto" id="btn_submit">Submit</button>
                     </div>
+
                     <div class="mb-3">
-                        <label for="posisi" class="form-label">Keterangan</label>
-                        <input type="text" class="form-control" id="posisi">
+                        <label for="keterangan_absen" class="form-label">Keterangan</label>
+                        <input type="text" class="form-control" id="keterangan_absen" name="keterangan_absen">
                     </div>
+
                     <div class="mb-3">
-                        <label for="foto" class="form-label">Bukti (Opsional)</label>
-                        <input class="form-control" type="file" id="foto">
+                        <label for="bukti_absen" class="form-label">Bukti (Opsional)</label>
+                        <input class="form-control" name="bukti_absen" type="file" id="bukti_absen">
                     </div>
                 </form>
             </div>
         </div>
     </div>
+
+    <script>
+        const BtnAdd = $('#btn_submit').click(function(btn) {
+
+            btn.preventDefault();
+
+            const formDataIzin = new FormData(document.getElementById('form_izin'));
+
+            $.ajax({
+                method: 'POST',
+                url: 'api.php?ep=izin',
+                cache: false,
+                processData: false,
+                contentType: false,
+                data: formDataIzin,
+                success: function(res) {
+
+                    $('#form_izin').trigger('reset');
+
+                    res = JSON.parse(res);
+
+                    console.log(res);
+
+                    let txtAlert, iconAlert;
+
+                    if (res.status == 200) {
+                        txtAlert = 'BERHASIL';
+                        iconAlert = 'success';
+                    } else {
+                        txtAlert = 'ERROR';
+                        iconAlert = 'error';
+                    }
+
+                    swal({
+                        title: "Absen Izin",
+                        text: txtAlert,
+                        icon: iconAlert,
+                        button: "OK",
+                    });
+                }
+            });
+
+
+
+        });
+    </script>
 
 </body>
 
