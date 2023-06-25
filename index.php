@@ -1,5 +1,8 @@
+<?php session_start(); ?>
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <?php require_once('components/head.php'); ?>
     <title>Absenky</title>
@@ -9,7 +12,12 @@
 
     <div class="container mt-4">
         <div class="d-flex">
-            <a href="login.php" class="btn btn-primary">Login</a>
+            <?php if (isset($_SESSION['ADMIN_LOGINED'])) : ?>
+                <a href="logout.php" class="btn btn-danger me-auto">Logout</a>
+                <a href="dashboard.php" class="btn btn-light ms-auto">Dashboard</a>
+            <?php else : ?>
+                <a href="login.php" class="btn btn-primary me-auto">Login</a>
+            <?php endif; ?>
         </div>
     </div>
 
@@ -24,12 +32,12 @@
                         <div class="card mb-3">
                             <div class="row g-0">
                                 <div class="col-lg-3">
-                                    <img src="/assets/images/nophoto.jpg" class="img-fluid rounded-start photo-user" />
+                                    <img src="/assets/images/nophoto.jpg" id="foto_staff" class="img-fluid rounded-start photo-user" />
                                 </div>
                                 <div class="col-lg-9 d-flex align-items-center">
                                     <div class="card-body">
-                                        <h5>-</h5>
-                                        <p class="card-text">-</p>
+                                        <h5 id="nama_staff">-</h5>
+                                        <p class="card-text" id="posisi_staff">-</p>
                                     </div>
                                 </div>
                             </div>
@@ -76,7 +84,8 @@
         </div>
     </div>
 
-    <?php require_once('components/scriptjs.php'); ?>
+    <script src="/assets/js/main.js"></script>
+
 </body>
 
 </html>
