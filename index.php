@@ -36,7 +36,7 @@
                                 </div>
                                 <div class="col-lg-9 d-flex align-items-center">
                                     <div class="card-body">
-                                        <h5 id="nama_staff">-</h5>
+                                        <h5 id="nama_staff" class="fw-bold">-</h5>
                                         <p class="card-text" id="posisi_staff">-</p>
                                     </div>
                                 </div>
@@ -46,7 +46,7 @@
                     <div class="col-lg-12 mb-4">
                         <div class="card">
                             <div class="card-body text-center">
-                                <h2 class="m-0 fw-bold">08 : 12 PM</h2>
+                                <h2 class="m-0 fw-bold" id="waktu-live">-</h2>
                             </div>
                         </div>
                     </div>
@@ -85,6 +85,17 @@
     </div>
 
     <script src="/assets/js/main.js"></script>
+
+    <script>
+
+        const waktuLive = document.getElementById('waktu-live');
+
+        const waktuLiveInterval = setInterval(function() {
+            const today = new Date();
+            waktuLive.innerText = today.getHours() + " : " + today.getMinutes() + " : " + today.getSeconds();
+        }, 1000);
+
+    </script>
 
 </body>
 

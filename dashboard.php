@@ -92,8 +92,8 @@ while ($row = $result->fetchArray()) {
             <div class="col-lg-4">
                 <div class="row mb-4">
                     <div class="col-lg-6">
-                        <div class="card p-4 bg-warning fw-bold text-white">
-                            24 Karyawan
+                        <div class="card p-4 bg-success fw-bold text-white">
+                            <?= count($staff); ?> Staff
                         </div>
                     </div>
                     <div class="col-lg-6">

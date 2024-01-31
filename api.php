@@ -21,6 +21,11 @@ class AbsenkyAPI
         $this->db = new SQLite3('absenky.db');
     }
 
+    public function test()
+    {
+        echo "AbsenkyAPI: test()";
+    }
+
     // Menampilkan JSON
     private function _response($res)
     {
