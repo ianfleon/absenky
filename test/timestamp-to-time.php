@@ -5,8 +5,10 @@
 list($day, $month, $year) = explode('-', date('d-m-Y'));
 
 $startTodayTimestamp = mktime(0, 0, 0, $month, $day, $year);
-$endTodayTimestamp = $todayTimestamp + (3600 * 24) - 1;
+$endTodayTimestamp = $startTodayTimestamp + (3600 * 24) - 1;
 
-echo date('H:i:s', ($endTodayTimestamp)); 
+// echo date('H:i:s', ($endTodayTimestamp)); 
+echo "start: " . $startTodayTimestamp . PHP_EOL;
+echo "end: " . $endTodayTimestamp;
 
 // echo $month;

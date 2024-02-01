@@ -1,5 +1,29 @@
 <?php session_start(); ?>
 
+<?php
+
+// list($day, $month, $year) = explode('-', date('d-m-Y'));
+
+// $startTodayTimestamp = mktime(0, 0, 0, $month, $day, $year);
+// $endTodayTimestamp = $startTodayTimestamp + (3600 * 24);
+
+// echo date('H:i:s', ($endTodayTimestamp)); 
+
+// $db = new SQLite3('absenky.db');
+
+// $absen = [];
+
+// $result = $db->query("SELECT * FROM absen_tb WHERE waktu_tmsp_absen > " . $startTodayTimestamp . " AND waktu_tmsp_absen < " . $endTodayTimestamp);
+
+// while ($row = $result->fetchArray()) {
+//     $absen[] = $row;
+// }
+
+// var_dump($absen);
+// exit;
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 

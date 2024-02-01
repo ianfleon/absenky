@@ -67,4 +67,10 @@ var html5QrcodeScanner = new Html5QrcodeScanner(
     }
 );
 
+function screenshootCam() {
+    let image_data_url = canvas.toDataURL('image/jpeg');
+   	// data url of the image
+   	console.log(image_data_url);
+}
+
 startqr();

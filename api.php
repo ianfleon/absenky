@@ -55,7 +55,7 @@ class AbsenkyAPI
     }
 
     // Upload Foto
-    function _upload_foto($foto, $nama = 'foto', $location)
+    function _upload_foto($foto, $nama = 'foto', $location = "")
     {
 
         // Ekstensi foto yang boleh diinput
@@ -238,6 +238,19 @@ class AbsenkyAPI
             'status' => 200,
             'data' => $result
         ]);
+    }
+
+    public function add_absen()
+    {
+        $idUser = $_POST['id_user'];
+        $waktuTimestamp = time();
+        $statusAbsen = 1;
+        $buktiAbsen = null;
+        $keteranganAbsen = null;
+        
+        $query = "INSERT INTO absen_tb VALUES (null, '$idUser', '$waktuTimestamp', '$statusAbsen', '$buktiAbsen', '$keteranganAbsen)";
+
+        $this->db->exec($query);
     }
 
 }
