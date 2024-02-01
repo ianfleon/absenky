@@ -2,24 +2,26 @@
 
 <?php
 
-// list($day, $month, $year) = explode('-', date('d-m-Y'));
+require_once('api.php');
 
-// $startTodayTimestamp = mktime(0, 0, 0, $month, $day, $year);
-// $endTodayTimestamp = $startTodayTimestamp + (3600 * 24);
+$api = new AbsenkyAPI();
 
-// echo date('H:i:s', ($endTodayTimestamp)); 
+$today = explode('-', date('d-m-Y'));
+$todayStart = mktime(0, 0, 0, $today[1], $today[0], $today[2]);
+$todayEnd = $todayStart + (3600 * 24);
+        
+$query = "SELECT * FROM absen_tb INNER JOIN staffs_tb ON absen_tb.idx_staff = staffs_tb.id_staff WHERE waktu_tmsp_absen >= " . $todayStart . " AND waktu_tmsp_absen <= " . $todayEnd;
 
-// $db = new SQLite3('absenky.db');
+$absen = $api->db->query($query);
 
-// $absen = [];
+$result = [];
 
-// $result = $db->query("SELECT * FROM absen_tb WHERE waktu_tmsp_absen > " . $startTodayTimestamp . " AND waktu_tmsp_absen < " . $endTodayTimestamp);
+while ($row = $absen->fetchArray()) {
+    $result[] = $row;
+}
 
-// while ($row = $result->fetchArray()) {
-//     $absen[] = $row;
-// }
+// var_dump($result);
 
-// var_dump($absen);
 // exit;
 
 ?>
@@ -78,27 +80,15 @@
                         <div class="card">
                             <table class="table m-0">
                                 <tbody>
+                                    <?php foreach ($result as $val) : ?>
                                     <tr>
                                         <th scope="row">
                                             <img src="/assets/icons/arrow.svg" alt="">
                                         </th>
-                                        <td>Huzaimal Ollong</td>
-                                        <td class="text-muted">12-03-2023 | 08:12AM</td>
+                                        <td><?= $val['nama_staff']; ?></td>
+                                        <td class="text-muted"><?= date('d-m-Y', $val['waktu_tmsp_absen']); ?> | <?= date('H:i:s', $val['waktu_tmsp_absen']); ?></td>
                                     </tr>
-                                    <tr>
-                                        <th scope="row">
-                                            <img src="/assets/icons/arrow.svg" alt="">
-                                        </th>
-                                        <td>Siti Tatawalat</td>
-                                        <td class="text-muted">12-03-2023 | 08:12AM</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">
-                                            <img src="/assets/icons/arrow.svg" alt="">
-                                        </th>
-                                        <td>Gerardus Kormomolin</td>
-                                        <td class="text-muted">12-03-2023 | 08:12AM</td>
-                                    </tr>
+                                    <?php endforeach; ?>
                                 </tbody>
                             </table>
                         </div>

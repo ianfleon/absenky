@@ -34,6 +34,8 @@ function startqr()
 
 function resultqr(id)
 {
+    console.log(`ID: ${id}`);
+
     console.log("Checking data staff..");
     $.ajax({
         url: 'api.php?ep=get_staff_by_id',
@@ -45,6 +47,7 @@ function resultqr(id)
             res = JSON.parse(res);
             // console.log(res);
             if (res.status == 200) {
+                reportAbsen(id);
                 showstaff(res.data);
             }
         }
@@ -67,10 +70,22 @@ var html5QrcodeScanner = new Html5QrcodeScanner(
     }
 );
 
-function screenshootCam() {
-    let image_data_url = canvas.toDataURL('image/jpeg');
-   	// data url of the image
-   	console.log(image_data_url);
+function reportAbsen(id)
+{
+    $.ajax({
+        url: 'api.php?ep=add_absen',
+        method: 'POST',
+        data: {
+            id_staff: id
+        },
+        success: function(res) {
+            // res = JSON.parse(res);
+            console.log("Succes: reportAbsen : " + id);
+            // if (res.status == 200) {
+                // alert("Berhasil absen!");
+            // }
+        }
+    });
 }
 
 startqr();

@@ -2,13 +2,13 @@
 
 // echo date('H:i:s', 1299446702);
 
-list($day, $month, $year) = explode('-', date('d-m-Y'));
+$today = explode('-', date('d-m-Y'));
 
-$startTodayTimestamp = mktime(0, 0, 0, $month, $day, $year);
-$endTodayTimestamp = $startTodayTimestamp + (3600 * 24) - 1;
+$todayStart = mktime(0, 0, 0, $today[1], $today[0], $today[2]);
+$todayEnd = $todayStart + (3600 * 24);
 
-// echo date('H:i:s', ($endTodayTimestamp)); 
-echo "start: " . $startTodayTimestamp . PHP_EOL;
-echo "end: " . $endTodayTimestamp;
+// echo date('H:i:s', ($todayEnd)); 
+echo "start: " . $todayStart . PHP_EOL;
+echo "end: " . $todayEnd;
 
 // echo $month;

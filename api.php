@@ -1,5 +1,7 @@
 <?php
 
+date_default_timezone_set('Asia/Jayapura');
+
 // Jalankan sesuai endpoint (fungsi)
 if (isset($_GET['ep'])) {
 
@@ -14,7 +16,7 @@ if (isset($_GET['ep'])) {
 
 class AbsenkyAPI
 {
-    private $db;
+    public $db;
 
     function __construct()
     {
@@ -242,15 +244,29 @@ class AbsenkyAPI
 
     public function add_absen()
     {
-        $idUser = $_POST['id_user'];
+        $idStaff = $_POST['id_staff'];
         $waktuTimestamp = time();
         $statusAbsen = 1;
         $buktiAbsen = null;
         $keteranganAbsen = null;
         
-        $query = "INSERT INTO absen_tb VALUES (null, '$idUser', '$waktuTimestamp', '$statusAbsen', '$buktiAbsen', '$keteranganAbsen)";
+        $query = "INSERT INTO absen_tb VALUES (null, '$idStaff', '$waktuTimestamp', '$statusAbsen', '$buktiAbsen', '$keteranganAbsen')";
+
+        // echo $query;
+        // exit;
 
         $this->db->exec($query);
+    }
+
+    public function absen_today()
+    {
+        $today = explode('-', date('d-m-Y'));
+        $todayStart = mktime(0, 0, 0, $today[1], $today[0], $today[2]);
+        $todayEnd = $todayStart + (3600 * 24);
+        
+        $query = "SELECT * FROM absen_tb WHERE waktu_tmsp_absen >= " . $todayStart . " AND waktu_tmsp_absen <= " . $todayEnd;
+        $result = $this->db->query($query);
+        var_dump($result->fetchArray());
     }
 
 }
