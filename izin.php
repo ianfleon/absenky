@@ -55,7 +55,7 @@ if (!isset($_SESSION['ADMIN_LOGINED'])) {
                     </div>
 
                     <div class="mb-3">
-                        <label for="bukti_absen" class="form-label">Bukti (Opsional)</label>
+                        <label for="bukti_absen" class="form-label">Bukti (Wajib)</label>
                         <input class="form-control" name="bukti_absen" type="file" id="bukti_absen">
                     </div>
                 </form>

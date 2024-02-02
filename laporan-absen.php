@@ -32,18 +32,18 @@ $absenToday = $api->absenToday();
 <body>
 
     <!-- Modal -->
-    <div class="modal fade" id="modalqr" tabindex="-1" aria-labelledby="modalqr" aria-hidden="true">
+    <div class="modal fade" id="modal-absen" tabindex="-1" aria-labelledby="modal-absen" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="label_modal">QRCode - Nama Pegawai</h5>
+                    <h5 class="modal-title" id="label_modal">Keterangan Absen</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <img src="" id="img_qr" width="100%" alt="">
+                    <img src="" id="img-bukti" width="100%" alt="">
                 </div>
-                <div class="modal-footer">
-                    <a href="#" download id="btn_download_qr" class="btn btn-primary">Download</a>
+                <div class="modal-footer" id="ket-absen">
+                    Lagi ada acara
                 </div>
             </div>
         </div>
@@ -72,6 +72,15 @@ $absenToday = $api->absenToday();
                                 <td class="fw-bold">Posisi</td>
                                 <td class="fw-bold">Tanggal</td>
                                 <td class="fw-bold">Waktu</td>
+                                <td class="fw-bold">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 32 32" id="option">
+                                        <g data-name="Layer 2">
+                                            <circle cx="5.11" cy="16" r="3.11"></circle>
+                                            <circle cx="16" cy="16" r="3.11"></circle>
+                                            <circle cx="26.89" cy="16" r="3.11"></circle>
+                                        </g>
+                                    </svg>
+                                </td>
                             </tr>
                         </thead>
                         <tbody>
@@ -82,6 +91,14 @@ $absenToday = $api->absenToday();
                                 <td><?= $absen['posisi_staff']; ?></td>
                                 <td><?= date('d-m-Y', $absen['waktu_tmsp_absen']); ?></td>
                                 <td><?= date('H:i:s', $absen['waktu_tmsp_absen']); ?></td>
+                                <td>
+                                    <?php if ($absen['status_absen'] < 1): ?>
+                                        <a href="#" class="text-decoration-none" onclick="izinReport('<?= $absen['bukti_absen']; ?>', '<?= $absen['keterangan_absen']; ?>')" data-bs-toggle="modal" data-bs-target="#modal-absen">
+                                        <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M4.348 21.241l4.185-7.249 5.67 9.806c-.714.133-1.45.202-2.203.202-2.907 0-5.575-1.036-7.652-2.759zm18.97-5.247c-1.182 3.345-3.806 6.012-7.124 7.252l-4.187-7.252h11.311zm-14.786-6l-5.656 9.797c-1.793-2.097-2.876-4.819-2.876-7.791 0-.684.057-1.354.167-2.006h8.365zm12.583-5.795c1.798 2.098 2.885 4.824 2.885 7.801 0 .679-.057 1.345-.165 1.994h-8.373l5.653-9.795zm-11.305-3.999c.71-.131 1.442-.2 2.19-.2 2.903 0 5.566 1.033 7.642 2.751l-4.18 7.24-5.652-9.791zm2.19 7.794h-11.314c1.186-3.344 3.812-6.008 7.132-7.244l4.182 7.244z"/></svg>
+                                    </a>
+                                    <?php endif; ?>
+
+                                </td>
                             </tr>
                             <?php endforeach; ?>
                         </tbody>
@@ -97,13 +114,25 @@ $absenToday = $api->absenToday();
     <script>
         // new DataTable('#table-absen');
         $(document).ready(function() {
+            
             $('#table-absen').DataTable( {
                 dom: 'Bfrtip',
                 buttons: [
-                'excel', 'print'
-            ]
-        } );
-} );
+                    'excel', 'print'
+                ]
+            });
+
+        });
+
+            function izinReport(bukti, ket) {
+                console.log("Report Absen");
+                $("#img-bukti").attr('src', '/public/absen/' + bukti);
+                $("#ket-absen").html(ket);
+            }  
+
+        
+
+
     </script>
  
 </body>

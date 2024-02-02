@@ -162,8 +162,27 @@ class AbsenkyAPI
     }
 
     public function getDataById($table, $id) {
+
         $result = $this->db->query("SELECT * FROM $table WHERE id_staff = '$id'")->fetchArray();
         return $result;
+    }
+
+    public function get_absen() {
+        
+        $id = $_GET['id'];
+        $result = $this->db->query("SELECT * FROM absen_tb WHERE id_absen = '$id'");
+        $rows = [];
+
+        while ($row = $result->fetchArray()) {
+            $rows[] = $row;
+        }
+        
+        $this->_response([
+                'status' => 200,
+                'data' => $result->fetchArray()
+        ]);
+
+        // var_dump($rows);
     }
 
     public function edit_staff()
