@@ -3,5 +3,6 @@ Absen menggunakan QRCode + Webcam
 
 # Todo
 
-1. Tambah absen ke database setelah scan QR
-2. Rekap absen (excel)
+1. [DONE] Tambah absen ke database setelah scan QR
+2. [DONE] Rekap absen (excel)
+3. [/] Tambah Icon di Tombol
