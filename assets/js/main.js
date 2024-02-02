@@ -27,11 +27,13 @@ function stopqr()
 
 }
 
+// Mulai Scan QR
 function startqr()
 {
     html5QrcodeScanner.render(onScanSuccess);
 }
 
+// Berhasil Scan QRCode
 function resultqr(id)
 {
     console.log(`ID: ${id}`);
@@ -47,13 +49,13 @@ function resultqr(id)
             res = JSON.parse(res);
             // console.log(res);
             if (res.status == 200) {
-                reportAbsen(id);
-                showstaff(res.data);
+                reportAbsen(id, res);
             }
         }
     });
 }
 
+// Menampilkan Data Staff
 function showstaff(data)
 {
     $('#foto_staff').attr('src', '/public/foto/' + data['foto_staff']);
@@ -70,7 +72,8 @@ var html5QrcodeScanner = new Html5QrcodeScanner(
     }
 );
 
-function reportAbsen(id)
+// API: Add Absen
+function reportAbsen(id, res)
 {
     $.ajax({
         url: 'api.php?ep=add_absen',
@@ -78,12 +81,13 @@ function reportAbsen(id)
         data: {
             id_staff: id
         },
-        success: function(res) {
-            // res = JSON.parse(res);
-            console.log("Succes: reportAbsen : " + id);
-            // if (res.status == 200) {
-                // alert("Berhasil absen!");
-            // }
+        success: function(response) {
+            // console.log("Succes: reportAbsen : " + id);
+            showstaff(res.data);
+            setTimeout(function() {
+                console.log("Refresh Page");
+                window.location.reload();
+            }, 1000);
         }
     });
 }

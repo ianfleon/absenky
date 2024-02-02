@@ -6,20 +6,7 @@ require_once('api.php');
 
 $api = new AbsenkyAPI();
 
-$today = explode('-', date('d-m-Y'));
-$todayStart = mktime(0, 0, 0, $today[1], $today[0], $today[2]);
-$todayEnd = $todayStart + (3600 * 24);
-        
-$query = "SELECT * FROM absen_tb INNER JOIN staffs_tb ON absen_tb.idx_staff = staffs_tb.id_staff WHERE waktu_tmsp_absen >= " . $todayStart . " AND waktu_tmsp_absen <= " . $todayEnd;
-
-$absen = $api->db->query($query);
-
-$result = [];
-
-while ($row = $absen->fetchArray()) {
-    $result[] = $row;
-}
-
+$result = $api->absenToday();
 // var_dump($result);
 
 // exit;
@@ -85,8 +72,7 @@ while ($row = $absen->fetchArray()) {
                                         <th scope="row">
                                             <img src="/assets/icons/arrow.svg" alt="">
                                         </th>
-                                        <td><?= $val['nama_staff']; ?></td>
-                                        <td class="text-muted"><?= date('d-m-Y', $val['waktu_tmsp_absen']); ?> | <?= date('H:i:s', $val['waktu_tmsp_absen']); ?></td>
+                                        <td class="text-muted">( <?= date('H:i:s', $val['waktu_tmsp_absen']); ?> ) - <b><?= $val['nama_staff']; ?></b></td>
                                     </tr>
                                     <?php endforeach; ?>
                                 </tbody>

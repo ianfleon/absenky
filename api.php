@@ -258,15 +258,24 @@ class AbsenkyAPI
         $this->db->exec($query);
     }
 
-    public function absen_today()
+    public function absenToday()
     {
         $today = explode('-', date('d-m-Y'));
         $todayStart = mktime(0, 0, 0, $today[1], $today[0], $today[2]);
         $todayEnd = $todayStart + (3600 * 24);
         
-        $query = "SELECT * FROM absen_tb WHERE waktu_tmsp_absen >= " . $todayStart . " AND waktu_tmsp_absen <= " . $todayEnd;
-        $result = $this->db->query($query);
-        var_dump($result->fetchArray());
+        $query = "SELECT * FROM absen_tb INNER JOIN staffs_tb ON absen_tb.idx_staff = staffs_tb.id_staff WHERE waktu_tmsp_absen >= " . $todayStart . " AND waktu_tmsp_absen <= " . $todayEnd . " ORDER BY waktu_tmsp_absen DESC";
+
+        $absen = $this->db->query($query);
+
+        $result = [];
+
+        while ($row = $absen->fetchArray()) {
+            $result[] = $row;
+        }
+
+        return $result;
+
     }
 
 }

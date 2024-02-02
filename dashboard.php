@@ -12,7 +12,10 @@ if (!isset($_SESSION['ADMIN_LOGINED'])) {
 
 <?php
 
+require_once('api.php');
+
 $db = new SQLite3('absenky.db');
+$api = new AbsenkyAPI();
 
 $staff = [];
 
@@ -20,6 +23,8 @@ $result = $db->query("SELECT * FROM staffs_tb");
 while ($row = $result->fetchArray()) {
     $staff[] = $row;
 }
+
+$absenToday = $api->absenToday();
 
 ?>
 
@@ -53,7 +58,8 @@ while ($row = $result->fetchArray()) {
 
     <div class="container mt-4">
         <div class="d-flex">
-            <a href="index.php" class="btn btn-light border">Home</a>
+            <a href="index.php" class="btn btn-light border me-4">Home</a>
+            <a href="laporan-absen.php" class="btn btn-light border">Laporan Absen</a>
             <div class="ms-auto">
                 <a href="#" id="btn_ganti_pw" class="btn btn-outline-danger border ms-auto">Ganti Password</a>
                 <a href="form-staff.php" class="btn btn-light border ms-auto">Tambah User</a>
@@ -98,15 +104,14 @@ while ($row = $result->fetchArray()) {
                     </div>
                     <div class="col-lg-6">
                         <div class="card p-4 fw-bold bg-primary text-white">
-                            4 Absen
+                            <?= count($absenToday); ?> Absen
                         </div>
                     </div>
                 </div>
                 <div class="card p-4">
-                    <div class="my-2"><span class="text-muted">08:11AM</span> - <b>Huzaimal Ollong</b></div>
-                    <div class="my-2"><span class="text-muted">08:11AM</span> - <b>Nacut Soulisa</b></div>
-                    <div class="my-2"><span class="text-muted">08:11AM</span> - <b>Inka Ely Mustika</b></div>
-                    <div class="my-2"><span class="text-muted">08:11AM</span> - <b>Sity Tatawalat</b></div>
+                    <?php foreach ($absenToday as $absen) : ?>
+                    <div class="my-2"><span class="text-muted"><?= date('H:i:s', $absen['waktu_tmsp_absen']); ?></span> - <b><?= $absen['nama_staff']?></b></div>
+                    <?php endforeach; ?>
                 </div>
             </div>
         </div>
